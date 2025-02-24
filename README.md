@@ -1,3 +1,3 @@
 # AWS Infra Architecture 
 
-![image](https://github.com/user-attachments/assets/3ae3ba38-c04b-476f-bf9f-c0dcca590905)
+![image](https://github.com/user-attachments/assets/4baa9dbd-55ff-4b7c-afcb-bdfeb0f3cd48)
