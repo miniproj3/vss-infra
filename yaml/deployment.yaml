@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: testcode-deployment
+  namespace: testcode-namespace
+  labels:
+    app: testcode
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: testcode
+  template:
+    metadata:
+      labels:
+        app: testcode
+    spec:
+      # serviceAccountName: secrets-sa     # IRSA 적용 필요 없음 (pod의 app.py에 Secrets Manager에 직접 접근하는 코드 없음)
+      containers:
+      - name: testcode-container
+        image: 707677861059.dkr.ecr.ap-northeast-2.amazonaws.com/testcodeecr:latest
+        ports:
+        - containerPort: 5000
+        envFrom:
+        - configMapRef:
+            name: mysql-config      # ConfigMap에서 MYSQL_DATABASE 값을 가져옴
+        env:
+        - name: MYSQL_USER
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secret
+              key: MYSQL_USER
+        # - name: MYSQL_DATABASE    # Secrets Manager에 database 정보 있으면 이렇게 가져옴
+          # valueFrom:
+              # secretKeyRef:
+                # name: mysql-secret
+                # key: MYSQL_DATABASE
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secret      # 자동 동기화된 비밀번호 가져옴
+              key: MYSQL_PASSWORD
+        - name: AWS_REGION
+          value: "ap-northeast-2"

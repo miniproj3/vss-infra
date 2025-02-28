@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mysql-config
+  namespace: testcode-namespace
+data:
+  MYSQL_HOST: "rds.tf.private.com"  # RDS 엔드포인트와 연결되어있는 Route53 FQDN
+  MYSQL_PORT: "3306"
+  MYSQL_DATABASE: "mydb"  # 기본값 추가 (Secrets Manager에 없어서 configmap에서 가져옴)
